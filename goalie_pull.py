@@ -2,13 +2,13 @@ import math
 from functools import lru_cache
 
 
-@lru_cache
+@lru_cache(maxsize=None)
 def ep_np(
     score_diff: int,
     time: int,
-    prob_of_no_score: float=0.987,
-    prob_team_scores: float=0.0065,
-    prob_team_concedes: float=0.0065,
+    prob_of_no_score: float = 0.987,
+    prob_team_scores: float = 0.0065,
+    prob_team_concedes: float = 0.0065,
 ) -> float:
     """
     Function calculates the expected point values of a team who doesn't pull
@@ -35,9 +35,17 @@ def ep_np(
             return (prob_of_no_score * 1.5) + (prob_team_scores * 2)
         else:
             if score_diff > 1:
-                return (prob_of_no_score * 2) + (prob_team_scores * 2) + (prob_team_concedes * 2)
+                return (
+                    (prob_of_no_score * 2)
+                    + (prob_team_scores * 2)
+                    + (prob_team_concedes * 2)
+                )
             elif score_diff == 1:
-                return (prob_of_no_score * 2) + (prob_team_scores * 2) + (prob_team_concedes * 1.5)
+                return (
+                    (prob_of_no_score * 2)
+                    + (prob_team_scores * 2)
+                    + (prob_team_concedes * 1.5)
+                )
     else:
 
         return (
@@ -47,14 +55,14 @@ def ep_np(
         )
 
 
-@lru_cache
+@lru_cache(maxsize=None)
 def ep_po(
-        score_diff: int,
-        time: int,
-        prob_of_no_score: float=0.9624,
-        prob_team_scores: float=0.0118,
-        prob_team_concedes: float=0.0258
-        ) -> float:
+    score_diff: int,
+    time: int,
+    prob_of_no_score: float = 0.9624,
+    prob_team_scores: float = 0.0118,
+    prob_team_concedes: float = 0.0258,
+) -> float:
     """
     Function calculates the expected point values of a team who could or could
     not pull their goalie depending on the situation
@@ -79,9 +87,17 @@ def ep_po(
             return (prob_of_no_score * 1.5) + (prob_team_scores * 2)
         else:
             if score_diff > 1:
-                return (prob_of_no_score * 2) + (prob_team_scores * 2) + (prob_team_concedes * 2)
+                return (
+                    (prob_of_no_score * 2)
+                    + (prob_team_scores * 2)
+                    + (prob_team_concedes * 2)
+                )
             elif score_diff == 1:
-                return (prob_of_no_score * 2) + (prob_team_scores * 2) + (prob_team_concedes * 1.5)
+                return (
+                    (prob_of_no_score * 2)
+                    + (prob_team_scores * 2)
+                    + (prob_team_concedes * 1.5)
+                )
     else:
         return (
             (
@@ -111,4 +127,4 @@ def ep_po(
 if __name__ == "__main__":
     print(ep_np(-1, 10))
     print(ep_np(-2, 200))
-    print(ep_po(-2, 300))
+    print(ep_po(-2, 600))
