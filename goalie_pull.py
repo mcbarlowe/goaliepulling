@@ -30,13 +30,11 @@ def ep_np(score_diff, time):
             elif score_diff == 1:
                 return (0.987 * 2) + (0.0065 * 2) + (0.0065 * 1.5)
     else:
-        time_segments = math.floor(time / 10)
-        prob_score_diff_is_same = 1 - ((0.0065 * (time_segments)) * 2)
 
         return (
-            (prob_score_diff_is_same * ep_np(score_diff, time - 10))
-            + ((time_segments * 0.0065) * ep_np(score_diff + 1, time - 10))
-            + ((time_segments * 0.0065) * ep_np(score_diff - 1, time - 10))
+            (0.987 * ep_np(score_diff, time - 10))
+            + (0.0065 * ep_np(score_diff + 1, time - 10))
+            + (0.0065 * ep_np(score_diff - 1, time - 10))
         )
 
 
@@ -67,28 +65,23 @@ def ep_po(score_diff, time):
             elif score_diff == 1:
                 return (0.9624 * 2) + (0.0118 * 2) + (0.0258 * 1.5)
     else:
-        time_segments = math.floor(time / 10)
-        prob_score_diff_is_same = (
-            1 - (0.0118 * (time_segments)) - (0.0258 * (time_segments))
-        )
-
         return (
             (
-                prob_score_diff_is_same
+                0.9624
                 * max(
                     ep_po(score_diff, time - 10),
                     ep_np(score_diff, time - 10),
                 )
             )
             + (
-                (time_segments * 0.0118)
+                0.0118
                 * max(
                     ep_po(score_diff + 1, time - 10),
                     ep_np(score_diff + 1, time - 10),
                 )
             )
             + (
-                (time_segments * 0.0258)
+                0.0258
                 * max(
                     ep_po(score_diff - 1, time - 10),
                     ep_np(score_diff - 1, time - 10),
